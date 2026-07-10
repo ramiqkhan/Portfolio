@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+/* ===========================
+   Marquee
+=========================== */
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+
+  100% {
+    transform: translateX(-33.33%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 15s linear infinite;
+}
+
+/* ===========================
+   Floating Animation
+=========================== */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-12px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* ===========================
+   Animated Grid
+=========================== */
+
+.grid-bg{
+position:absolute;
+inset:0;
+
+background-image:
+linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),
+linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
+
+background-size:45px 45px;
+
+animation:gridMove 20s linear infinite;
+}
+
+@keyframes gridMove{
+
+0%{
+background-position:0 0;
+}
+
+100%{
+background-position:45px 45px;
+}
+
+}
