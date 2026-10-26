@@ -1,97 +1,112 @@
-import { motion, AnimatePresence } from 'framer-motion';
-import { Mail, Phone, MapPin, CheckCircle, Send } from 'lucide-react';
+import { useState } from 'react';
+import { ArrowRight, ArrowUpRight, Copy, Check } from 'lucide-react';
+import { FaGithub, FaLinkedinIn } from 'react-icons/fa';
+import { Section, Reveal } from './ui';
+import { profile } from '../data/portfolio';
 
-export default function Contact({ formSubmitted, setFormSubmitted, fadeInUpVariants, staggerContainer }) {
+const mailto = `mailto:${profile.email}?subject=${encodeURIComponent('Opportunity for Muhammad Ramiq Khan')}`;
+
+export default function Contact() {
+  const [copied, setCopied] = useState(false);
+
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(profile.email);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      window.location.href = mailto;
+    }
+  };
+
+  const channels = [
+    { label: 'GitHub', value: `github.com/${profile.githubHandle}`, href: profile.github, Icon: FaGithub },
+    { label: 'LinkedIn', value: `in/${profile.linkedinHandle}`, href: profile.linkedin, Icon: FaLinkedinIn },
+    { label: 'Phone', value: profile.phone, href: profile.phoneHref },
+    { label: 'Location', value: profile.location },
+  ];
+
   return (
-    <section id="contact" className="py-24 max-w-5xl mx-auto px-4 border-t border-slate-900 mb-12">
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="text-center mb-16"
-      >
-        <h2 className="text-xs font-bold uppercase tracking-widest text-cyan-500 mb-2">Connect</h2>
-        <h3 className="text-3xl font-bold">Initiate Communication</h3>
-      </motion.div>
+    <Section id="contact" className="light-contact border-t border-line-soft">
+      <Reveal>
+        <div className="relative overflow-hidden lit-surface rounded-[28px] border border-line px-6 py-14 sm:px-12 sm:py-20 lg:px-20 lg:py-24">
+          <div
+            className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold/60 to-transparent"
+            aria-hidden="true"
+          />
+          <div
+            className="pointer-events-none absolute -top-40 left-1/2 h-80 w-[60%] -translate-x-1/2 bg-[radial-gradient(closest-side,rgb(216_184_120/0.09),transparent)]"
+            aria-hidden="true"
+          />
 
-      <div className="grid md:grid-cols-5 gap-8 items-start">
-        <motion.div 
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="md:col-span-2 space-y-4"
-        >
-          <motion.div variants={fadeInUpVariants} className="p-4 bg-slate-900/40 border border-slate-800 rounded-xl flex items-center gap-4">
-            <Mail className="w-5 h-5 text-cyan-400" />
-            <div className="text-xs font-mono">
-              <p className="text-slate-500 text-[10px] uppercase">Email Link</p>
-              <a href="mailto:mramiqkhan66@gmail.com" className="text-slate-300 hover:text-cyan-400">mramiqkhan66@gmail.com</a>
-            </div>
-          </motion.div>
-          <motion.div variants={fadeInUpVariants} className="p-4 bg-slate-900/40 border border-slate-800 rounded-xl flex items-center gap-4">
-            <Phone className="w-5 h-5 text-purple-400" />
-            <div className="text-xs font-mono">
-              <p className="text-slate-500 text-[10px] uppercase">Voice Protocol</p>
-              <p className="text-slate-300">+92 346 1112148</p>
-            </div>
-          </motion.div>
-          <motion.div variants={fadeInUpVariants} className="p-4 bg-slate-900/40 border border-slate-800 rounded-xl flex items-center gap-4">
-            <MapPin className="w-5 h-5 text-emerald-400" />
-            <div className="text-xs font-mono">
-              <p className="text-slate-500 text-[10px] uppercase">HQ Location</p>
-              <p className="text-slate-300">Karachi, Pakistan</p>
-            </div>
-          </motion.div>
-        </motion.div>
+          <div className="relative mb-10 flex items-center gap-4">
+            <span className="label label-gold tabular-nums">05</span>
+            <span className="h-px w-10 bg-gold-line" aria-hidden="true" />
+            <span className="label">Contact</span>
+          </div>
 
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="md:col-span-3 bg-slate-900/20 border border-slate-800 rounded-2xl p-6"
-        >
-          <AnimatePresence mode="wait">
-            {formSubmitted ? (
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.95 }} 
-                animate={{ opacity: 1, scale: 1 }} 
-                exit={{ opacity: 0 }}
-                className="py-12 text-center space-y-3"
-              >
-                <CheckCircle className="w-12 h-12 text-emerald-400 mx-auto" />
-                <h4 className="text-lg font-bold">Transmission Dispatched</h4>
-                <p className="text-sm text-slate-400">Your message was processed successfully. I will get back to you shortly.</p>
-              </motion.div>
-            ) : (
-              <form onSubmit={(e) => { e.preventDefault(); setFormSubmitted(true); }} className="space-y-4">
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-[10px] font-mono text-slate-500 uppercase mb-1">Identity</label>
-                    <input required type="text" className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-cyan-500/50" placeholder="Name" />
-                  </div>
-                  <div>
-                    <label className="block text-[10px] font-mono text-slate-500 uppercase mb-1">Return Endpoint</label>
-                    <input required type="email" className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-cyan-500/50" placeholder="Email" />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-[10px] font-mono text-slate-500 uppercase mb-1">Message Body</label>
-                  <textarea required rows={4} className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-cyan-500/50 resize-none" placeholder="Write message here..." />
-                </div>
-                <motion.button 
-                  whileHover={{ scale: 1.01 }}
-                  whileTap={{ scale: 0.99 }}
-                  type="submit" 
-                  className="w-full py-3 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-cyan-400 text-xs font-bold uppercase tracking-wider rounded-xl flex items-center justify-center gap-2 transition-all"
-                >
-                  <Send className="w-4 h-4" /> Send Message
-                </motion.button>
-              </form>
-            )}
-          </AnimatePresence>
-        </motion.div>
-      </div>
-    </section>
+          <h2 className="relative max-w-4xl text-[2.25rem] leading-[1.08] font-semibold tracking-[-0.04em] text-balance text-fg sm:text-6xl lg:text-7xl">
+            Have a project or <span className="serif-accent">opportunity</span> in mind?
+          </h2>
+          <p className="relative mt-7 max-w-xl text-base leading-[1.75] text-muted sm:text-lg">
+            Let's build something thoughtful, reliable, and ready for the real world.
+          </p>
+
+          <div className="relative mt-12 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <a href={mailto} className="btn btn-primary">
+              Let's Talk <ArrowRight className="h-4 w-4" />
+            </a>
+            <button type="button" onClick={copyEmail} className="btn btn-outline">
+              {copied ? <Check className="h-4 w-4 text-gold" /> : <Copy className="h-4 w-4" />}
+              <span aria-live="polite">{copied ? 'Email copied' : 'Copy email'}</span>
+            </button>
+          </div>
+
+          <div className="relative mt-16 border-t border-line pt-10">
+            <p className="label mb-3">Email</p>
+            <a
+              href={mailto}
+              className="link-underline font-display text-xl font-medium tracking-[-0.02em] break-all text-fg hover:text-gold-soft sm:text-3xl lg:text-4xl"
+            >
+              {profile.email}
+            </a>
+
+            <ul className="mt-12 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-line-soft bg-line-soft sm:grid-cols-2 lg:grid-cols-4">
+              {channels.map(({ label, value, href, Icon }) => {
+                const inner = (
+                  <>
+                    <span className="label flex items-center gap-2">
+                      {Icon && <Icon className="h-3 w-3" aria-hidden="true" />}
+                      {label}
+                    </span>
+                    <span className="mt-2 flex items-center justify-between gap-2 text-[0.9375rem] text-fg">
+                      <span className="truncate">{value}</span>
+                      {href && (
+                        <ArrowUpRight className="h-4 w-4 shrink-0 text-subtle transition-colors group-hover:text-gold" aria-hidden="true" />
+                      )}
+                    </span>
+                  </>
+                );
+                return (
+                  <li key={label} className="bg-surface">
+                    {href ? (
+                      <a
+                        href={href}
+                        {...(href.startsWith('http') && { target: '_blank', rel: 'noreferrer' })}
+                        className="group block px-5 py-5 transition-colors hover:bg-elevated"
+                      >
+                        {inner}
+                      </a>
+                    ) : (
+                      <div className="px-5 py-5">{inner}</div>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </div>
+      </Reveal>
+    </Section>
   );
 }

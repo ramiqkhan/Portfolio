@@ -1,16 +1,29 @@
-# React + Vite
+# Muhammad Ramiq Khan — Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Personal portfolio built with React, Vite, Tailwind CSS v4 and Framer Motion.
 
-Currently, two official plugins are available:
+## Scripts
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```bash
+npm install
+npm run dev      # local dev server
+npm run build    # production build to dist/
+npm run preview  # serve the production build
+npm run lint
+```
 
-## React Compiler
+## Editing content
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+All copy lives in `src/data/portfolio.js` — profile details, featured projects, the project grid and skills.
+Project screenshots are WebP files in `src/assets/projects/` (1440×900 captures of the live sites).
 
-## Expanding the ESLint configuration
+## Deploying to Vercel
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+The repo is ready for Vercel's Vite preset (`vercel.json` pins the build command and output folder).
+
+1. Push to GitHub (`main` branch).
+2. In Vercel: **Add New → Project → Import** `ramiqkhan/Portfolio`.
+3. Leave the detected settings (Framework: Vite, Build: `npm run build`, Output: `dist`) and click **Deploy**.
+
+Every push to `main` then redeploys production; other branches and pull requests get preview URLs.
+Requires Node 22.12+ (set via `engines` in `package.json`).

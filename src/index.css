@@ -1,68 +1,557 @@
 @import "tailwindcss";
 
 /* ===========================
-   Marquee
+   Luxury Graphite design tokens
 =========================== */
-@keyframes marquee {
-  0% {
-    transform: translateX(0%);
-  }
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Manrope", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
 
-  100% {
-    transform: translateX(-33.33%);
-  }
-}
+  --color-ink: #111214;
+  --color-ink-2: #151619;
+  --color-surface: #1b1d21;
+  --color-elevated: #22252a;
 
-.animate-marquee {
-  animation: marquee 15s linear infinite;
+  --color-fg: #f5f3ef;
+  --color-muted: #b6b4ae;
+  --color-subtle: #8f8d87;
+
+  --color-gold: #d8b878;
+  --color-gold-soft: #e7cf9f;
+  --color-bronze: #8d7549;
+
+  --color-line: rgb(245 243 239 / 0.12);
+  --color-line-soft: rgb(245 243 239 / 0.07);
+  --color-gold-line: rgb(216 184 120 / 0.28);
 }
 
 /* ===========================
-   Floating Animation
+   Base
 =========================== */
-@keyframes float {
-  0% {
-    transform: translateY(0px);
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-ink);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv11";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+}
+
+::selection {
+  background: var(--color-gold);
+  color: var(--color-ink);
+}
+
+:focus-visible {
+  outline: 1.5px solid var(--color-gold);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ===========================
+   Atmosphere — layered graphite backdrop
+   All layers are decorative, sit behind content (negative z inside the
+   isolated app root) and never receive pointer events.
+=========================== */
+
+/* Foundation: graphite base with a slow tonal drift down the page */
+.page-bg {
+  background-color: var(--color-ink);
+  background-image: linear-gradient(
+    180deg,
+    #141417 0%,
+    #111214 18%,
+    #101113 55%,
+    #121316 82%,
+    #0f1012 100%
+  );
+}
+
+/* Viewport-fixed vignette: charcoal falloff toward the edges */
+.backdrop-vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 130% 95% at 50% 35%, transparent 52%, rgb(6 6 7 / 0.55) 100%),
+    linear-gradient(90deg, rgb(8 8 9 / 0.35) 0%, transparent 14%, transparent 86%, rgb(8 8 9 / 0.35) 100%);
+}
+
+/* Near-invisible monochrome film grain (inline SVG, ~0.5 KB, tiles) */
+.backdrop-grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0.9 0 0 0 -0.25'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+
+/* Hero lighting rig: key light, preview glow, headline warmth */
+.hero-lighting {
+  position: absolute;
+  inset: 0 0 -10rem 0;
+  pointer-events: none;
+  background:
+    /* key light falling from the upper right */
+    radial-gradient(ellipse 60% 48% at 92% -8%, rgb(216 184 120 / 0.16), rgb(216 184 120 / 0.05) 45%, transparent 72%),
+    /* diffused champagne wash behind the project previews */
+    radial-gradient(ellipse 42% 46% at 74% 44%, rgb(216 184 120 / 0.13), rgb(216 184 120 / 0.04) 50%, transparent 78%),
+    /* warm graphite lift behind the headline */
+    radial-gradient(ellipse 42% 40% at 22% 42%, rgb(245 228 200 / 0.05), transparent 72%),
+    /* soft floor so the rig dissolves into the page */
+    linear-gradient(180deg, transparent 72%, var(--color-ink) 100%);
+}
+
+/* Architectural grid, fading out toward the bottom of the hero */
+.hero-lighting::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgb(245 243 239 / 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(245 243 239 / 0.045) 1px, transparent 1px);
+  background-size: 56px 56px;
+  background-position: center top;
+  -webkit-mask-image: radial-gradient(ellipse 85% 70% at 55% 22%, black 30%, transparent 78%);
+  mask-image: radial-gradient(ellipse 85% 70% at 55% 22%, black 30%, transparent 78%);
+}
+
+/* Faint gold horizon line under the hero composition */
+.hero-lighting::after {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: 10rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgb(216 184 120 / 0.22), transparent);
+}
+
+@media (max-width: 1023px) {
+  /* Stacked layout: headline on top, previews below */
+  .hero-lighting {
+    background:
+      radial-gradient(ellipse 90% 30% at 85% -4%, rgb(216 184 120 / 0.14), transparent 70%),
+      radial-gradient(ellipse 80% 26% at 30% 22%, rgb(245 228 200 / 0.045), transparent 72%),
+      radial-gradient(ellipse 85% 24% at 65% 72%, rgb(216 184 120 / 0.1), rgb(216 184 120 / 0.03) 50%, transparent 78%),
+      linear-gradient(180deg, transparent 80%, var(--color-ink) 100%);
+  }
+
+  .hero-lighting::before {
+    background-image:
+      linear-gradient(rgb(245 243 239 / 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(245 243 239 / 0.03) 1px, transparent 1px);
+    background-size: 44px 44px;
+    -webkit-mask-image: linear-gradient(180deg, black 0%, black 30%, transparent 70%);
+    mask-image: linear-gradient(180deg, black 0%, black 30%, transparent 70%);
+  }
+}
+
+/* Section grid: matches the hero grid (same size, opacity and alignment)
+   so the lines run continuously down the page; edges fade softly. */
+.section-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgb(245 243 239 / 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(245 243 239 / 0.045) 1px, transparent 1px);
+  background-size: 56px 56px;
+  background-position: center top;
+  -webkit-mask-image: radial-gradient(ellipse 85% 80% at 50% 50%, black 35%, transparent 85%);
+  mask-image: radial-gradient(ellipse 85% 80% at 50% 50%, black 35%, transparent 85%);
+}
+
+@media (max-width: 1023px) {
+  .section-grid {
+    background-image:
+      linear-gradient(rgb(245 243 239 / 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(245 243 239 / 0.03) 1px, transparent 1px);
+    background-size: 44px 44px;
+  }
+}
+
+/* Section lighting — multi-layer backgrounds on the sections themselves */
+.light-work {
+  background:
+    radial-gradient(ellipse 45% 22% at 88% 6%, rgb(216 184 120 / 0.06), transparent 75%),
+    radial-gradient(ellipse 50% 18% at 8% 38%, rgb(245 228 200 / 0.03), transparent 75%),
+    radial-gradient(ellipse 55% 20% at 92% 62%, rgb(216 184 120 / 0.045), transparent 75%);
+}
+
+.light-band {
+  background:
+    radial-gradient(ellipse 50% 55% at 100% 0%, rgb(216 184 120 / 0.06), transparent 72%),
+    radial-gradient(ellipse 45% 50% at 0% 100%, rgb(245 228 200 / 0.025), transparent 72%),
+    /* translucent lift (not a solid fill) so grain and vignette stay visible */
+    linear-gradient(180deg, rgb(245 243 239 / 0.03) 0%, rgb(245 243 239 / 0.016) 55%, rgb(245 243 239 / 0.006) 100%);
+}
+
+.light-skills {
+  background: radial-gradient(ellipse 45% 50% at 0% 50%, rgb(216 184 120 / 0.04), transparent 75%);
+}
+
+/* Halo wide enough to spill past the contact card's edges */
+.light-contact {
+  background:
+    radial-gradient(ellipse 75% 70% at 50% 52%, rgb(216 184 120 / 0.09), rgb(216 184 120 / 0.03) 55%, transparent 80%),
+    radial-gradient(ellipse 40% 30% at 50% 100%, rgb(216 184 120 / 0.05), transparent 75%);
+}
+
+/* Top-lit surface for the contact card */
+.lit-surface {
+  background: linear-gradient(180deg, #212328 0%, var(--color-surface) 38%, #191b1f 100%);
+}
+
+/* ===========================
+   Type helpers
+=========================== */
+.label {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-subtle);
+}
+
+.label-gold {
+  color: var(--color-gold);
+}
+
+.serif-accent {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--color-gold);
+}
+
+/* ===========================
+   Components
+=========================== */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--color-line);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  line-height: 1.1rem;
+  color: var(--color-muted);
+  white-space: nowrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  min-height: 3rem;
+  padding: 0 1.5rem;
+  border-radius: 999px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: 0.005em;
+  transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+}
+
+.btn svg {
+  transition: transform 0.3s;
+}
+
+.btn:hover svg {
+  transform: translateX(3px);
+}
+
+.btn-primary {
+  background: var(--color-fg);
+  color: var(--color-ink);
+}
+
+.btn-primary:hover {
+  background: #ffffff;
+}
+
+.btn-outline {
+  border: 1px solid var(--color-gold-line);
+  color: var(--color-fg);
+}
+
+.btn-outline:hover {
+  border-color: var(--color-gold);
+  color: var(--color-gold-soft);
+}
+
+.link-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.4s ease;
+}
+
+.link-underline:hover {
+  background-size: 100% 1px;
+}
+
+/* Native disclosure used for project case studies */
+details > summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
+details[open] .chevron {
+  transform: rotate(45deg);
+}
+
+/* ===========================
+   Hero stage — 3D sculpture with floating project panels
+   --px / --py (-1..1) are written by HeroStage for pointer parallax.
+=========================== */
+.hero-stage {
+  --px: 0;
+  --py: 0;
+  position: relative;
+  height: 400px;
+  perspective: 1500px;
+  perspective-origin: 55% 45%;
+}
+
+@media (min-width: 640px) {
+  .hero-stage {
+    height: 500px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-stage {
+    height: 580px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .hero-stage {
+    height: 620px;
+  }
+}
+
+/* Soft champagne light behind the sculpture */
+.stage-glow {
+  position: absolute;
+  inset: 4% -6% 6% 2%;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 46% 42% at 56% 48%, rgb(216 184 120 / 0.16), rgb(216 184 120 / 0.05) 45%, transparent 72%),
+    radial-gradient(ellipse 30% 26% at 56% 48%, rgb(245 228 200 / 0.06), transparent 70%);
+}
+
+/* Diffuse contact shadow beneath the floating sculpture */
+.stage-floor {
+  position: absolute;
+  left: 32%;
+  right: 20%;
+  bottom: 5%;
+  height: 46px;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 50% 50% at 50% 50%, rgb(0 0 0 / 0.55), transparent 70%),
+    radial-gradient(ellipse 40% 30% at 50% 40%, rgb(216 184 120 / 0.08), transparent 70%);
+}
+
+.stage-sculpture {
+  position: absolute;
+  z-index: 2;
+  left: 60%;
+  top: 50%;
+  height: 56%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+@media (min-width: 1024px) {
+  .stage-sculpture {
+    left: 56%;
+    top: 48%;
+    height: 72%;
+  }
+}
+
+/* Floating browser panels: outer = pose + parallax, middle = float, inner = hover */
+.stage-panel {
+  position: absolute;
+  display: block;
+  transform-style: preserve-3d;
+  border-radius: 14px;
+}
+
+.stage-panel--back {
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 58%;
+  transform-origin: left center;
+  transform:
+    translate3d(calc(var(--px) * -12px), calc(var(--py) * -8px), 0)
+    rotateY(9deg) rotateX(3deg);
+}
+
+.stage-panel--front {
+  z-index: 3;
+  right: 0;
+  bottom: 0;
+  width: 58%;
+  transform-origin: right center;
+  transform:
+    translate3d(calc(var(--px) * 16px), calc(var(--py) * 12px), 0)
+    rotateY(-8deg) rotateX(2deg);
+}
+
+@media (min-width: 1024px) {
+  .stage-panel--back {
+    top: 2%;
+    width: 56%;
+    transform:
+      translate3d(calc(var(--px) * -14px), calc(var(--py) * -10px), 0)
+      rotateY(16deg) rotateX(4deg);
+  }
+
+  .stage-panel--front {
+    bottom: 3%;
+    width: 57%;
+    transform:
+      translate3d(calc(var(--px) * 18px), calc(var(--py) * 14px), 0)
+      rotateY(-13deg) rotateX(3deg);
+  }
+}
+
+.stage-float {
+  animation: stage-float 10s ease-in-out infinite;
+}
+
+.stage-float--back {
+  animation-duration: 12s;
+  animation-delay: -4s;
+}
+
+@keyframes stage-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
   }
 
   50% {
-    transform: translateY(-12px);
-  }
-
-  100% {
-    transform: translateY(0px);
+    transform: translate3d(0, -10px, 0);
   }
 }
 
-.animate-float {
-  animation: float 3s ease-in-out infinite;
+.stage-lift {
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* ===========================
-   Animated Grid
-=========================== */
-
-.grid-bg{
-position:absolute;
-inset:0;
-
-background-image:
-linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),
-linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
-
-background-size:45px 45px;
-
-animation:gridMove 20s linear infinite;
+.stage-frame {
+  transition: border-color 0.5s, box-shadow 0.7s;
 }
 
-@keyframes gridMove{
-
-0%{
-background-position:0 0;
+.stage-panel:hover .stage-lift,
+.stage-panel:focus-visible .stage-lift {
+  transform: translate3d(0, -6px, 0) scale(1.015);
 }
 
-100%{
-background-position:45px 45px;
+.stage-panel:hover .stage-frame,
+.stage-panel:focus-visible .stage-frame {
+  border-color: rgb(216 184 120 / 0.45);
+  box-shadow:
+    0 50px 90px -30px rgb(0 0 0 / 0.8),
+    0 0 0 1px rgb(0 0 0 / 0.4),
+    0 0 40px -10px rgb(216 184 120 / 0.18);
 }
 
+/* CSS sculpture fallback: conic-shaded metal rings in 3D */
+.css-sculpture {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  transform-style: preserve-3d;
+  transition: opacity 1s ease;
+  animation: css-sculpture-turn 60s linear infinite;
+}
+
+.css-ring {
+  position: absolute;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  --ring: 10px;
+  background: conic-gradient(
+    from 210deg,
+    #3c3e44,
+    #1b1d21 12%,
+    #8d7549 22%,
+    #e7cf9f 26%,
+    #2a2c31 36%,
+    #4a4c52 55%,
+    #18191c 72%,
+    #6b5a3a 86%,
+    #3c3e44
+  );
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - var(--ring)), #000 calc(100% - var(--ring) + 1px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - var(--ring)), #000 calc(100% - var(--ring) + 1px));
+}
+
+.css-ring--outer {
+  width: 60%;
+  --ring: 11px;
+  transform: rotateX(18deg) rotateY(-28deg);
+}
+
+.css-ring--gold {
+  width: 46%;
+  --ring: 4px;
+  background: conic-gradient(from 160deg, #8d7549, #e7cf9f 25%, #b89a5e 45%, #6b5a3a 65%, #d8b878 85%, #8d7549);
+  transform: rotateX(72deg) rotateY(-10deg);
+}
+
+.css-ring--inner {
+  width: 31%;
+  --ring: 8px;
+  transform: rotateY(68deg) rotateX(10deg);
+}
+
+@keyframes css-sculpture-turn {
+  to {
+    transform: rotateY(360deg);
+  }
 }

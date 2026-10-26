@@ -1,292 +1,232 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ExternalLink, Globe, Smartphone, Monitor } from 'lucide-react';
+import { ArrowUpRight, Plus, Smartphone } from 'lucide-react';
+import { Section, SectionHeading, Reveal, BrowserFrame } from './ui';
+import { featuredProjects, projects } from '../data/portfolio';
 
-export default function Projects() {
-  const [activeTab, setActiveTab] = useState('all');
+const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
-  const projectsData = [
-    // --- TOP FEATURED DEPLOYMENTS ---
-    {
-      title: "Iqra Traders",
-      category: "web",
-      domain: "iqratraders.com",
-      link: "https://iqratraders.com/",
-      tags: ["React.js", "Tailwind CSS"],
-      badgeTags: ["ENTERPRISE", "DISTRIBUTION"],
-      description: "High-performance enterprise tech distribution platform featuring automated transactional email pipelines and real-time product inventory architectures."
-    },
-    {
-      title: "Houston Easy Repairs",
-      category: "web",
-      domain: "houstoneasyrepairs.com",
-      link: "https://houstoneasyrepairs.com/",
-      tags: ["Node.js", "SMTP Routing"],
-      badgeTags: ["CONSUMER SERVICES", "DISPATCH"],
-      description: "Consumer services dispatch deployment with robust multi-channel custom email alert systems and fluid client communication pipelines."
-    },
-    {
-      title: "Herbalize",
-      category: "web",
-      domain: "theherbalyze.com",
-      link: "https://www.theherbalyze.com/",
-      tags: ["React.js", "SEO Management"],
-      badgeTags: ["PURE REMEDIES", "E-COMMERCE"],
-      description: "A specialized e-commerce and wellness blogging ecosystem delivering rich product architectures, optimized search index structures, and pure botanical catalog grids."
-    },
-    {
-      title: "Craft Tech",
-      category: "web",
-      domain: "crafttech.crafttechco.com",
-      link: "https://crafttech.crafttechco.com",
-      tags: ["System Architecture", "Node.js"],
-      badgeTags: ["AGENCY", "CORPORATE"],
-      description: "Official agency portal and core corporate engine driving automated developer workflows, custom API integrations, and premium client dashboards."
-    },
+const filters = [
+  { key: 'all', label: 'All' },
+  { key: 'Full stack', label: 'Full stack' },
+  { key: 'Frontend', label: 'Frontend' },
+  { key: 'Mobile app', label: 'Mobile' },
+];
 
-    // --- OTHER COMPLETED DEPLOYMENTS ---
-    {
-      title: "Lula's Garden",
-      category: "web",
-      domain: "garden-plum-sigma.vercel.app",
-      link: "https://garden-plum-sigma.vercel.app/",
-      tags: ["React.js", "Tailwind CSS"],
-      badgeTags: ["E-COMMERCE", "UX DESIGN"],
-      description: "A premium boutique botanical shop experience utilizing modern masonry layouts, sticky global interactive headers, and sleek glassmorphic product catalog matrices."
-    },
-    {
-      title: "Apex Construction Hub",
-      category: "web",
-      domain: "construction-liard-two.vercel.app",
-      link: "https://construction-liard-two.vercel.app/",
-      tags: ["React.js", "Tailwind CSS"],
-      badgeTags: ["HEAVY INDUSTRY", "PORTFOLIO"],
-      description: "A heavy-industry presentation application featuring dense, high-performance portfolio filters, spatial layouts, and silky asynchronous load transitions."
-    },
-    {
-      title: "Velocity Motor Hub",
-      category: "web",
-      domain: "sports-amber-eight.vercel.app",
-      link: "https://sports-amber-eight.vercel.app/",
-      tags: ["React.js", "Tailwind CSS"],
-      badgeTags: ["NAKED STREETFIGHTERS", "DARK THEME"],
-      description: "A tracking and spec-comparison portal specialized for high-velocity street bikes, rendered entirely using stealth-black matte aesthetics and neon interactive overlays."
-    },
-    {
-      title: "Da Cake Store",
-      category: "web",
-      domain: "da-cake.vercel.app/same-day",
-      link: "https://da-cake.vercel.app/same-day",
-      tags: ["React.js", "Express.js"],
-      badgeTags: ["E-COMMERCE", "ORDER ROUTING"],
-      description: "An on-demand e-commerce portal optimizing dynamic same-day confectionery order placements, delivery configurations, and structured checkouts."
-    },
-    {
-      title: "Ventura Corporate Suite",
-      category: "web",
-      domain: "ventura-fawn-gamma.vercel.app",
-      link: "https://ventura-fawn-gamma.vercel.app/",
-      tags: ["React.js", "Framer Motion"],
-      badgeTags: ["MODULAR UI", "CORPORATE"],
-      description: "A high-end corporate presentation interface delivering performance-optimized layout modules, sticky headers, and smooth viewport transitions."
-    },
-    {
-      title: "ZAK Solutions Portal",
-      category: "web",
-      domain: "zak-seven.vercel.app",
-      link: "https://zak-seven.vercel.app/",
-      tags: ["React.js", "REST APIs"],
-      badgeTags: ["DASHBOARD UI", "PROFESSIONAL"],
-      description: "Tailored professional software platform structuring complex dataset representations into highly clear, responsive layouts for fast client tracking."
-    },
-    {
-      title: "FBR Invoice App",
-      category: "mobile",
-      domain: "React Native Mobile App",
-      link: "#",
-      tags: ["React Native", "Expo"],
-      badgeTags: ["FINANCIAL", "LOCAL SCHEMA"],
-      description: "A tactical financial logging platform built natively for mobile systems, featuring fast forms and local data compilation schemas."
-    }
-  ];
-
-  const filteredProjects = activeTab === 'all' 
-    ? projectsData 
-    : projectsData.filter(p => p.category === activeTab);
+function FeaturedProject({ project, index }) {
+  const reverse = index % 2 === 1;
 
   return (
-    <section id="projects" className="py-32 max-w-6xl mx-auto px-4 border-t border-slate-900/40 relative">
-      
-      {/* Background Ambient Flare */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-cyan-500/[0.02] rounded-full blur-[150px] pointer-events-none" />
+    <article id={`project-${slug(project.title)}`} className="scroll-mt-28">
+      <Reveal>
+        <div className="mb-6 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-line pt-6">
+          <span className="label label-gold tabular-nums">0{index + 1}</span>
+          <span className="label">{project.category}</span>
+          <span className="label ml-auto hidden sm:inline">{project.location}</span>
+        </div>
 
-      {/* HEADER SECTION */}
-      <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-24 gap-6 relative z-10">
-        <div>
-          <h2 className="text-xs font-bold uppercase tracking-[0.25em] text-cyan-400 mb-3">SELECTED WORKS</h2>
-          <h3 className="text-5xl md:text-6xl font-black tracking-tight text-slate-800 uppercase select-none">
-            <span className="text-white font-black">{activeTab === 'all' ? 'WEB' : activeTab}</span> PROJECTS
-          </h3>
-        </div>
-        <div className="lg:max-w-xs border-l border-cyan-500/30 pl-4 py-1">
-          <p className="text-[11px] font-mono uppercase tracking-wider text-slate-500 leading-relaxed">
-            Building digital experiences that combine aesthetic beauty with technical excellence.
-          </p>
-        </div>
+        <a
+          href={project.url}
+          target="_blank"
+          rel="noreferrer"
+          aria-label={`Visit the ${project.title} live website`}
+          className="group block"
+        >
+          <BrowserFrame
+            src={project.image}
+            alt={`${project.title} live website homepage`}
+            domain={project.domain}
+            aspect="aspect-[16/10] lg:aspect-[16/8]"
+          />
+        </a>
+      </Reveal>
+
+      <div className="mt-12 grid grid-cols-1 gap-12 lg:mt-16 lg:grid-cols-12 lg:gap-16">
+        <Reveal className={`lg:col-span-5 ${reverse ? 'lg:order-2' : ''}`}>
+          <h3 className="text-4xl font-semibold tracking-[-0.035em] text-fg sm:text-5xl">{project.title}</h3>
+          <p className="mt-6 text-base leading-[1.75] text-pretty text-muted sm:text-[1.0625rem]">{project.summary}</p>
+          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+            <a href={project.url} target="_blank" rel="noreferrer" className="btn btn-primary">
+              Visit Live Website <ArrowUpRight className="h-4 w-4" />
+            </a>
+          </div>
+        </Reveal>
+
+        <Reveal delay={0.1} className={`lg:col-span-7 ${reverse ? 'lg:order-1' : ''}`}>
+          <p className="label mb-3">The brief</p>
+          <p className="font-serif text-[1.375rem] leading-[1.45] text-fg italic sm:text-2xl">{project.challenge}</p>
+
+          <p className="label mt-10 mb-5">What I built</p>
+          <ol className="grid grid-cols-1 gap-x-10 sm:grid-cols-2">
+            {project.highlights.map((h, i) => (
+              <li key={h} className="flex gap-4 border-t border-line-soft py-4 text-sm leading-relaxed text-muted">
+                <span className="pt-px text-[11px] text-gold tabular-nums">0{i + 1}</span>
+                {h}
+              </li>
+            ))}
+          </ol>
+
+          <ul className="mt-6 flex flex-wrap gap-2" aria-label="Technologies">
+            {project.stack.map((s) => (
+              <li key={s} className="tag">
+                {s}
+              </li>
+            ))}
+          </ul>
+        </Reveal>
       </div>
 
-      {/* FILTER BUTTONS NAVIGATION */}
-      <div className="flex gap-2 mb-20 bg-slate-950/60 p-1 rounded-xl border border-slate-900 w-fit backdrop-blur-md relative z-10">
-        {['all', 'web', 'mobile'].map((tab) => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={`px-5 py-2 rounded-lg text-xs font-mono font-bold uppercase tracking-widest transition-all relative ${
-              activeTab === tab ? 'text-cyan-400' : 'text-slate-500 hover:text-slate-300'
-            }`}
-          >
-            <span className="relative z-10">{tab}</span>
-            {activeTab === tab && (
-              <motion.div
-                layoutId="activePremiumDesignTab"
-                className="absolute inset-0 bg-slate-900 border border-slate-800/80 rounded-lg shadow-inner"
-                transition={{ type: "spring", stiffness: 350, damping: 28 }}
-              />
-            )}
-          </button>
+      <Reveal className="mt-12">
+        <details className="group/cs rounded-2xl border border-line bg-ink-2 open:border-gold-line">
+          <summary className="flex min-h-16 items-center justify-between gap-4 px-6 py-4 sm:px-8">
+            <span className="flex items-baseline gap-4">
+              <span className="font-display text-base font-semibold text-fg">Case study</span>
+              <span className="hidden text-sm text-subtle sm:inline">Architecture, data and integrations</span>
+            </span>
+            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-line text-gold transition-colors group-hover/cs:border-gold-line">
+              <Plus className="chevron h-4 w-4 transition-transform duration-300" aria-hidden="true" />
+            </span>
+          </summary>
+          <dl className="grid grid-cols-1 gap-px border-t border-line-soft bg-line-soft sm:grid-cols-2 lg:grid-cols-4">
+            {project.caseStudy.map((c) => (
+              <div key={c.label} className="bg-ink-2 px-6 py-6 sm:px-8">
+                <dt className="label label-gold mb-3">{c.label}</dt>
+                <dd className="text-sm leading-relaxed text-muted">{c.text}</dd>
+              </div>
+            ))}
+          </dl>
+        </details>
+      </Reveal>
+    </article>
+  );
+}
+
+function ProjectCard({ project }) {
+  const media = project.image ? (
+    <img
+      src={project.image}
+      alt={`${project.title} homepage`}
+      width="1200"
+      height="750"
+      loading="lazy"
+      decoding="async"
+      className="h-full w-full object-cover object-top transition-transform duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
+    />
+  ) : (
+    <div className="grid h-full place-items-center bg-[radial-gradient(circle_at_50%_45%,rgb(216_184_120/0.08),transparent_60%)]">
+      <div className="flex flex-col items-center gap-3">
+        <Smartphone className="h-9 w-9 text-gold/80" strokeWidth={1.25} aria-hidden="true" />
+        <span className="label">Native mobile app</span>
+      </div>
+    </div>
+  );
+
+  const body = (
+    <>
+      <div className="relative aspect-[16/10] overflow-hidden rounded-xl border border-line bg-surface">{media}</div>
+      <div className="mt-5 flex items-center justify-between gap-3">
+        <span className="label label-gold">{project.type}</span>
+        {project.url && (
+          <ArrowUpRight
+            className="h-4 w-4 text-subtle transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-gold"
+            aria-hidden="true"
+          />
+        )}
+      </div>
+      <h4 className="mt-2 font-display text-xl font-semibold tracking-[-0.02em] text-fg">{project.title}</h4>
+      <p className="mt-2 text-sm leading-relaxed text-muted">{project.description}</p>
+      <p className="mt-4 text-xs text-subtle">
+        {project.tags.join(' · ')}
+        {project.url && (
+          <>
+            <span className="mx-2 text-line" aria-hidden="true">|</span>
+            {project.domain}
+          </>
+        )}
+      </p>
+    </>
+  );
+
+  return project.url ? (
+    <a href={project.url} target="_blank" rel="noreferrer" className="group block">
+      {body}
+    </a>
+  ) : (
+    <div className="group">{body}</div>
+  );
+}
+
+export default function Projects() {
+  const [filter, setFilter] = useState('all');
+  const visible = filter === 'all' ? projects : projects.filter((p) => p.type === filter);
+
+  return (
+    <Section id="projects" className="light-work">
+      <SectionHeading
+        index="01"
+        label="Selected Work"
+        title={
+          <>
+            Real products, live in <span className="serif-accent">production.</span>
+          </>
+        }
+        description="Two recent full stack builds presented in depth, followed by a selection of client and personal projects — each linked to the live site."
+      />
+
+      <div className="space-y-28 sm:space-y-36">
+        {featuredProjects.map((p, i) => (
+          <FeaturedProject key={p.title} project={p} index={i} />
         ))}
       </div>
 
-      {/* ALTERNATING ROW DEPLOYMENTS */}
-      <div className="space-y-36 relative z-10">
-        <AnimatePresence mode="popLayout">
-          {filteredProjects.map((project, index) => {
-            const isEven = index % 2 === 0;
+      <div className="mt-32 sm:mt-40">
+        <Reveal className="mb-12 flex flex-col gap-8 border-t border-line pt-8 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p className="label mb-4">Archive</p>
+            <h3 className="text-3xl font-semibold tracking-[-0.03em] text-fg sm:text-4xl">More projects</h3>
+          </div>
 
-            return (
-              <motion.div
-                key={project.title}
-                layout
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-120px" }}
-                exit={{ opacity: 0, y: -30 }}
-                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                className="relative grid lg:grid-cols-12 gap-12 items-center"
+          <div role="group" aria-label="Filter projects" className="flex flex-wrap gap-x-6 gap-y-2">
+            {filters.map((f) => (
+              <button
+                key={f.key}
+                type="button"
+                onClick={() => setFilter(f.key)}
+                aria-pressed={filter === f.key}
+                className={`relative min-h-10 text-sm transition-colors duration-300 ${
+                  filter === f.key ? 'text-fg' : 'text-subtle hover:text-fg'
+                }`}
               >
-                {/* Embedded Glow Canvas */}
-                <div className="absolute -z-10 w-80 h-80 bg-cyan-500/[0.015] rounded-full blur-[100px] pointer-events-none left-1/3" />
+                {f.label}
+                {filter === f.key && (
+                  <motion.span
+                    layoutId="project-filter"
+                    className="absolute inset-x-0 bottom-1 h-px bg-gold"
+                    transition={{ type: 'spring', stiffness: 400, damping: 34 }}
+                  />
+                )}
+              </button>
+            ))}
+          </div>
+        </Reveal>
 
-                {/* Interactive Premium Frame Wrapper */}
-                <motion.div 
-                  whileHover={{ 
-                    scale: 1.015,
-                    borderColor: "rgba(34, 211, 238, 0.25)",
-                    boxShadow: "0 30px 60px -15px rgba(0, 0, 0, 0.8), 0 0 50px -10px rgba(6, 182, 212, 0.05)"
-                  }}
-                  transition={{ type: "spring", stiffness: 200, damping: 22 }}
-                  className={`lg:col-span-7 relative w-full aspect-video rounded-2xl border border-slate-900 bg-slate-950/80 shadow-2xl overflow-hidden group ${
-                    !isEven ? 'lg:order-2' : ''
-                  }`}
-                >
-                  {/* Top Window Chrome Controls */}
-                  <div className="h-10 w-full bg-slate-900/60 border-b border-slate-900 px-4 flex items-center justify-between backdrop-blur-sm">
-                    <div className="flex gap-1.5">
-                      <span className="w-2.5 h-2.5 rounded-full bg-red-500/40 group-hover:bg-red-500/70 transition-colors" />
-                      <span className="w-2.5 h-2.5 rounded-full bg-amber-500/40 group-hover:bg-amber-500/70 transition-colors" />
-                      <span className="w-2.5 h-2.5 rounded-full bg-cyan-500/40 group-hover:bg-cyan-500/70 transition-colors" />
-                    </div>
-                    
-                    {/* Active Live Domain Address Bar */}
-                    <div className="bg-slate-950/80 px-4 py-0.5 rounded-md text-[10px] font-mono text-slate-400 w-3/5 md:w-1/2 flex items-center justify-center gap-2 border border-slate-900/60 shadow-inner">
-                      {project.link !== "#" && (
-                        <span className="relative flex h-1.5 w-1.5 shrink-0">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                          <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-cyan-500"></span>
-                        </span>
-                      )}
-                      <span className="truncate tracking-wide">{project.domain}</span>
-                    </div>
-                    <div className="w-12" />
-                  </div>
-
-                  {/* Window Content Matrix Viewport */}
-                  <div className="w-full h-[calc(100%-40px)] relative bg-slate-950">
-                    {project.link !== "#" ? (
-                      <iframe 
-                        src={project.link} 
-                        title={project.title}
-                        loading="lazy"
-                        className="w-full h-full border-none opacity-75 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none select-none grayscale-[20%] group-hover:grayscale-0"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex flex-col items-center justify-center bg-[#09090f] text-slate-600">
-                        <Smartphone className="w-10 h-10 mb-2 text-slate-800" />
-                        <span className="text-[10px] font-mono tracking-[0.2em] text-slate-500">NATIVE APP DEPLOYMENT</span>
-                      </div>
-                    )}
-                    
-                    {/* Frame Shield blocking dynamic cursor trapping inside iframes */}
-                    <div className="absolute inset-0 bg-transparent" />
-                  </div>
-                </motion.div>
-
-                {/* Text Content and Metadata Architecture Columns */}
-                <div className={`lg:col-span-5 flex flex-col justify-center space-y-5 ${
-                  !isEven ? 'lg:order-1 lg:pr-10' : 'lg:pl-10'
-                }`}>
-                  {/* Category Badge Pill Assemblies */}
-                  <div className="flex flex-wrap gap-2">
-                    {project.badgeTags?.map((bTag) => (
-                      <span key={bTag} className="px-2.5 py-0.5 bg-cyan-500/[0.03] border border-cyan-500/20 text-[9px] font-mono font-bold tracking-[0.15em] text-cyan-400 rounded-md shadow-sm">
-                        {bTag}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Heading & Target Link Trigger */}
-                  <div className="flex items-center gap-3 group">
-                    <h4 className="text-2xl font-bold tracking-tight text-slate-100 group-hover:text-cyan-400 transition-colors duration-300">
-                      {project.title}
-                    </h4>
-                    {project.link !== "#" && (
-                      <a 
-                        href={project.link} 
-                        target="_blank" 
-                        rel="noreferrer"
-                        className="p-1 text-slate-600 hover:text-cyan-400 transition-colors duration-200"
-                      >
-                        <ExternalLink className="w-4 h-4" />
-                      </a>
-                    )}
-                  </div>
-
-                  {/* Structural Text Descriptions */}
-                  <p className="text-sm text-slate-400 font-normal leading-relaxed text-left">
-                    {project.description}
-                  </p>
-
-                  <hr className="border-slate-900/60 my-1" />
-
-                  {/* Architecture Badging Footer */}
-                  <div className="flex flex-wrap items-center gap-x-6 gap-y-2.5 text-[11px] font-mono text-slate-500">
-                    <div className="flex items-center gap-2">
-                      <Monitor className="w-3.5 h-3.5 text-cyan-500/60" />
-                      <span className="tracking-wide text-slate-400">{project.tags.join(' / ').toUpperCase()}</span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                      <Globe className="w-3.5 h-3.5 text-cyan-500/60" />
-                      <span className="text-[10px] tracking-wider uppercase text-slate-500">RESPONSIVE</span>
-                    </div>
-                  </div>
-                </div>
-
-              </motion.div>
-            );
-          })}
-        </AnimatePresence>
+        <motion.ul layout className="grid grid-cols-1 gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
+          <AnimatePresence mode="popLayout" initial={false}>
+            {visible.map((p) => (
+              <motion.li
+                key={p.title}
+                layout
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.35 }}
+              >
+                <ProjectCard project={p} />
+              </motion.li>
+            ))}
+          </AnimatePresence>
+        </motion.ul>
       </div>
-
-    </section>
+    </Section>
   );
 }
