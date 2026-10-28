@@ -21,11 +21,13 @@ export function Container({ children, className = '' }) {
   return <div className={`mx-auto w-full max-w-[1200px] px-5 sm:px-8 lg:px-10 ${className}`}>{children}</div>;
 }
 
-export function Section({ id, children, className = '' }) {
+// Each section picks its own atmosphere: `tone` (lighting, painted on the
+// section) and `pattern` (grid / columns / blueprint / ledger / rings,
+// drawn on a decorative layer behind the content).
+export function Section({ id, children, tone = '', pattern = 'grid', className = '' }) {
   return (
-    <section id={id} className={`relative py-24 sm:py-32 ${className}`}>
-      {/* Same architectural grid as the hero, kept behind section content */}
-      <div className="section-grid -z-20" aria-hidden="true" />
+    <section id={id} className={`relative py-24 sm:py-32 ${tone && `tone-${tone}`} ${className}`}>
+      {pattern && <div className={`section-pattern pattern-${pattern} -z-20`} aria-hidden="true" />}
       <Container>{children}</Container>
     </section>
   );

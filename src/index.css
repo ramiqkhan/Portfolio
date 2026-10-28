@@ -175,12 +175,20 @@ h3 {
   }
 }
 
-/* Section grid: matches the hero grid (same size, opacity and alignment)
-   so the lines run continuously down the page; edges fade softly. */
-.section-grid {
+/* ===========================
+   Section atmospheres
+   Every section gets its own pattern (decorative layer behind content)
+   and tone (lighting painted on the section). Tones fade to transparent
+   at the top and bottom so neighbouring sections blend without seams.
+=========================== */
+.section-pattern {
   position: absolute;
   inset: 0;
   pointer-events: none;
+}
+
+/* Work — the hero's architectural grid, continued */
+.pattern-grid {
   background-image:
     linear-gradient(rgb(245 243 239 / 0.045) 1px, transparent 1px),
     linear-gradient(90deg, rgb(245 243 239 / 0.045) 1px, transparent 1px);
@@ -190,8 +198,198 @@ h3 {
   mask-image: radial-gradient(ellipse 85% 80% at 50% 50%, black 35%, transparent 85%);
 }
 
+/* About — editorial column guides aligned to the content container */
+.pattern-columns {
+  left: 50%;
+  right: auto;
+  width: min(100%, 1200px);
+  transform: translateX(-50%);
+  padding-inline: 40px;
+  background-image: linear-gradient(90deg, rgb(245 243 239 / 0.055) 1px, transparent 1px);
+  background-size: calc(100% / 6) 100%;
+  background-origin: content-box;
+  background-clip: content-box;
+  -webkit-mask-image: linear-gradient(180deg, transparent, black 18%, black 82%, transparent);
+  mask-image: linear-gradient(180deg, transparent, black 18%, black 82%, transparent);
+}
+
+/* Skills — engineering blueprint: minor + major grid with gold nodes */
+.pattern-blueprint {
+  background-image:
+    radial-gradient(circle, rgb(216 184 120 / 0.28) 1px, transparent 1.6px),
+    linear-gradient(rgb(245 243 239 / 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(245 243 239 / 0.05) 1px, transparent 1px),
+    linear-gradient(rgb(245 243 239 / 0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(245 243 239 / 0.022) 1px, transparent 1px);
+  background-size: 96px 96px, 96px 96px, 96px 96px, 16px 16px, 16px 16px;
+  background-position: calc(50% - 48px) -48px, center top, center top, center top, center top;
+  -webkit-mask-image: radial-gradient(ellipse 80% 75% at 50% 45%, black 30%, transparent 80%);
+  mask-image: radial-gradient(ellipse 80% 75% at 50% 45%, black 30%, transparent 80%);
+}
+
+/* Experience — architectural ledger lines */
+.pattern-ledger {
+  background-image: linear-gradient(rgb(245 243 239 / 0.04) 1px, transparent 1px);
+  background-size: 100% 48px;
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 20%, black 80%, transparent);
+  mask-image: linear-gradient(90deg, transparent, black 20%, black 80%, transparent);
+}
+
+/* Contact — faint concentric rings radiating from the headline */
+.pattern-rings {
+  background-image: repeating-radial-gradient(
+    circle at 50% 36%,
+    rgb(245 243 239 / 0.05) 0 1px,
+    transparent 1px 84px
+  );
+  -webkit-mask-image: radial-gradient(ellipse 60% 55% at 50% 38%, black 20%, transparent 75%);
+  mask-image: radial-gradient(ellipse 60% 55% at 50% 38%, black 20%, transparent 75%);
+}
+
 @media (max-width: 1023px) {
-  .section-grid {
+  .pattern-grid {
+    background-image:
+      linear-gradient(rgb(245 243 239 / 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(245 243 239 / 0.03) 1px, transparent 1px);
+    background-size: 44px 44px;
+  }
+
+  .pattern-columns {
+    padding-inline: 20px;
+    background-size: calc(100% / 4) 100%;
+  }
+
+  .pattern-blueprint {
+    opacity: 0.7;
+  }
+}
+
+/* Tones */
+.tone-work {
+  background:
+    radial-gradient(ellipse 45% 22% at 88% 6%, rgb(216 184 120 / 0.06), transparent 75%),
+    radial-gradient(ellipse 50% 18% at 8% 38%, rgb(245 228 200 / 0.03), transparent 75%),
+    radial-gradient(ellipse 55% 20% at 92% 62%, rgb(216 184 120 / 0.045), transparent 75%);
+}
+
+/* Editorial graphite: raking light from the upper left */
+.tone-about {
+  background:
+    radial-gradient(ellipse 60% 45% at 0% 28%, rgb(245 228 200 / 0.05), transparent 70%),
+    radial-gradient(ellipse 45% 40% at 0% 22%, rgb(216 184 120 / 0.06), transparent 70%),
+    radial-gradient(ellipse 40% 45% at 82% 40%, rgb(216 184 120 / 0.05), transparent 70%),
+    linear-gradient(180deg, transparent 0%, rgb(245 243 239 / 0.018) 15%, rgb(245 243 239 / 0.012) 85%, transparent 100%);
+}
+
+/* Technical graphite: cooler and slightly recessed */
+.tone-skills {
+  background:
+    radial-gradient(ellipse 40% 35% at 85% 15%, rgb(216 184 120 / 0.045), transparent 75%),
+    linear-gradient(180deg, transparent 0%, rgb(8 9 11 / 0.35) 14%, rgb(8 9 11 / 0.35) 86%, transparent 100%);
+}
+
+/* Deep charcoal with a warm wash along the timeline */
+.tone-experience {
+  background:
+    radial-gradient(ellipse 30% 45% at 42% 35%, rgb(216 184 120 / 0.04), transparent 75%),
+    linear-gradient(180deg, transparent 0%, rgb(5 5 6 / 0.55) 12%, rgb(5 5 6 / 0.55) 88%, transparent 100%);
+}
+
+/* Warm graphite with a diffused champagne light behind the headline */
+.tone-contact {
+  background:
+    radial-gradient(ellipse 55% 42% at 50% 36%, rgb(216 184 120 / 0.13), rgb(216 184 120 / 0.04) 50%, transparent 78%),
+    radial-gradient(ellipse 80% 60% at 50% 100%, rgb(141 117 73 / 0.08), transparent 75%),
+    linear-gradient(180deg, transparent 0%, rgb(20 17 13 / 0.35) 20%, rgb(8 8 9 / 0.4) 100%);
+}
+
+/* Footer — minimal charcoal under a fine gold hairline */
+.tone-footer {
+  background: linear-gradient(180deg, rgb(8 8 9 / 0.4), rgb(5 5 6 / 0.65));
+}
+
+.gold-hairline {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgb(216 184 120 / 0.45) 30%, rgb(216 184 120 / 0.45) 70%, transparent);
+}
+
+/* ===========================
+   About — metallic monogram plate
+=========================== */
+.monogram-plate {
+  position: relative;
+  aspect-ratio: 1;
+  width: 100%;
+  max-width: 420px;
+  margin-inline: auto;
+}
+
+.monogram-ring {
+  position: absolute;
+  border-radius: 50%;
+  --ring: 14px;
+  background: conic-gradient(
+    from 210deg,
+    #3c3e44,
+    #1b1d21 12%,
+    #8d7549 22%,
+    #e7cf9f 27%,
+    #2a2c31 37%,
+    #4a4c52 55%,
+    #18191c 72%,
+    #6b5a3a 86%,
+    #3c3e44
+  );
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - var(--ring)), #000 calc(100% - var(--ring) + 1px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - var(--ring)), #000 calc(100% - var(--ring) + 1px));
+}
+
+.monogram-ring--outer {
+  inset: 8%;
+}
+
+.monogram-ring--inner {
+  inset: 21%;
+  --ring: 2px;
+  background: conic-gradient(from 120deg, #8d7549, #e7cf9f 25%, #b89a5e 45%, #6b5a3a 65%, #d8b878 85%, #8d7549);
+}
+
+.monogram-glyph {
+  font-family: var(--font-serif);
+  font-style: italic;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  background: linear-gradient(160deg, #f5f3ef 10%, #e7cf9f 45%, #8d7549 95%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Crop marks in the corners of the monogram plate */
+.crop-mark {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-color: rgb(216 184 120 / 0.45);
+}
+
+/* ===========================
+   Work — cinematic showroom
+=========================== */
+
+/* Grid only behind the introduction, fading out before the projects */
+.pattern-grid-top {
+  background-image:
+    linear-gradient(rgb(245 243 239 / 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(245 243 239 / 0.045) 1px, transparent 1px);
+  background-size: 56px 56px;
+  background-position: center top;
+  -webkit-mask-image: radial-gradient(ellipse 80% 820px at 38% 0, black 25%, transparent 80%);
+  mask-image: radial-gradient(ellipse 80% 820px at 38% 0, black 25%, transparent 80%);
+}
+
+@media (max-width: 1023px) {
+  .pattern-grid-top {
     background-image:
       linear-gradient(rgb(245 243 239 / 0.03) 1px, transparent 1px),
       linear-gradient(90deg, rgb(245 243 239 / 0.03) 1px, transparent 1px);
@@ -199,36 +397,332 @@ h3 {
   }
 }
 
-/* Section lighting — multi-layer backgrounds on the sections themselves */
-.light-work {
+/* Ambient glow behind the section introduction */
+.work-intro {
+  position: relative;
+  isolation: isolate;
+}
+
+.work-intro::before {
+  content: "";
+  position: absolute;
+  inset: -40% -12% -50% -12%;
+  z-index: -1;
+  pointer-events: none;
   background:
-    radial-gradient(ellipse 45% 22% at 88% 6%, rgb(216 184 120 / 0.06), transparent 75%),
-    radial-gradient(ellipse 50% 18% at 8% 38%, rgb(245 228 200 / 0.03), transparent 75%),
-    radial-gradient(ellipse 55% 20% at 92% 62%, rgb(216 184 120 / 0.045), transparent 75%);
+    radial-gradient(ellipse 45% 55% at 28% 55%, rgb(216 184 120 / 0.08), transparent 70%),
+    radial-gradient(ellipse 30% 45% at 85% 70%, rgb(245 228 200 / 0.035), transparent 70%);
 }
 
-.light-band {
+.scroll-cue svg {
+  animation: scroll-cue 2.6s ease-in-out infinite;
+}
+
+@keyframes scroll-cue {
+  0%,
+  100% {
+    transform: translateY(-2px);
+  }
+
+  50% {
+    transform: translateY(3px);
+  }
+}
+
+/* Each featured project sits in its own full-bleed lighting zone */
+.showcase {
+  position: relative;
+  isolation: isolate;
+}
+
+.showcase-backdrop {
+  position: absolute;
+  z-index: -1;
+  top: -16%;
+  bottom: -16%;
+  left: 50%;
+  width: 100vw;
+  translate: -50% 0;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(180deg, transparent, black 22%, black 78%, transparent);
+  mask-image: linear-gradient(180deg, transparent, black 22%, black 78%, transparent);
+}
+
+/* Blackstream: amber night light pooling on the left, behind the preview */
+.showcase--limo .showcase-backdrop {
   background:
-    radial-gradient(ellipse 50% 55% at 100% 0%, rgb(216 184 120 / 0.06), transparent 72%),
-    radial-gradient(ellipse 45% 50% at 0% 100%, rgb(245 228 200 / 0.025), transparent 72%),
-    /* translucent lift (not a solid fill) so grain and vignette stay visible */
-    linear-gradient(180deg, rgb(245 243 239 / 0.03) 0%, rgb(245 243 239 / 0.016) 55%, rgb(245 243 239 / 0.006) 100%);
+    radial-gradient(ellipse 40% 58% at 30% 50%, rgb(216 184 120 / 0.1), rgb(141 117 73 / 0.04) 50%, transparent 75%),
+    radial-gradient(ellipse 28% 38% at 82% 42%, rgb(245 228 200 / 0.03), transparent 70%),
+    linear-gradient(90deg, rgb(8 8 9 / 0.28), transparent 38%, transparent 70%, rgb(8 8 9 / 0.2));
 }
 
-.light-skills {
-  background: radial-gradient(ellipse 45% 50% at 0% 50%, rgb(216 184 120 / 0.04), transparent 75%);
-}
-
-/* Halo wide enough to spill past the contact card's edges */
-.light-contact {
+/* Ideal Watches: warmer gold, lit from the upper right like a display case */
+.showcase--watches .showcase-backdrop {
   background:
-    radial-gradient(ellipse 75% 70% at 50% 52%, rgb(216 184 120 / 0.09), rgb(216 184 120 / 0.03) 55%, transparent 80%),
-    radial-gradient(ellipse 40% 30% at 50% 100%, rgb(216 184 120 / 0.05), transparent 75%);
+    radial-gradient(ellipse 40% 58% at 70% 50%, rgb(231 207 159 / 0.13), rgb(216 184 120 / 0.05) 50%, transparent 75%),
+    radial-gradient(ellipse 22% 30% at 72% 8%, rgb(245 228 200 / 0.07), transparent 70%),
+    linear-gradient(270deg, rgb(8 8 9 / 0.28), transparent 38%, transparent 70%, rgb(8 8 9 / 0.2));
 }
 
-/* Top-lit surface for the contact card */
-.lit-surface {
-  background: linear-gradient(180deg, #212328 0%, var(--color-surface) 38%, #191b1f 100%);
+@media (max-width: 1023px) {
+  .showcase--limo .showcase-backdrop,
+  .showcase--watches .showcase-backdrop {
+    background: radial-gradient(ellipse 80% 35% at 50% 26%, rgb(216 184 120 / 0.1), transparent 75%);
+  }
+}
+
+/* Showroom preview: --tx / --ty (-1..1) come from usePointerTilt */
+.showroom {
+  --tx: 0;
+  --ty: 0;
+  --base-ry: 0deg;
+  position: relative;
+  display: block;
+  perspective: 1800px;
+  border-radius: 16px;
+}
+
+@media (min-width: 1024px) {
+  .showroom--left {
+    --base-ry: 5deg;
+  }
+
+  .showroom--right {
+    --base-ry: -5deg;
+  }
+}
+
+.showroom-light {
+  position: absolute;
+  inset: -14% -10%;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.7;
+  transition: opacity 0.8s ease;
+  background: radial-gradient(
+    ellipse 50% 55% at calc(50% + var(--tx) * 14%) calc(50% + var(--ty) * 14%),
+    rgb(216 184 120 / 0.2),
+    rgb(141 117 73 / 0.06) 50%,
+    transparent 72%
+  );
+}
+
+.showroom--watches .showroom-light {
+  background: radial-gradient(
+    ellipse 50% 55% at calc(50% + var(--tx) * 14%) calc(50% + var(--ty) * 14%),
+    rgb(231 207 159 / 0.24),
+    rgb(216 184 120 / 0.07) 50%,
+    transparent 72%
+  );
+}
+
+.showroom-lift {
+  display: block;
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.showroom-body {
+  display: block;
+  transform-style: preserve-3d;
+  transform: rotateY(calc(var(--base-ry) + var(--tx) * 4deg)) rotateX(calc(var(--ty) * -3deg));
+}
+
+.showroom-frame {
+  display: block;
+  overflow: hidden;
+  border-radius: 16px;
+  border: 1px solid rgb(245 243 239 / 0.1);
+  background: var(--color-surface);
+  box-shadow:
+    inset 0 1px 0 rgb(245 243 239 / 0.06),
+    0 0 0 1px rgb(0 0 0 / 0.35),
+    0 30px 60px -30px rgb(0 0 0 / 0.6),
+    0 60px 110px -45px rgb(0 0 0 / 0.85);
+  transition: border-color 0.6s ease, box-shadow 0.8s ease;
+}
+
+.showroom-viewport {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--color-ink-2);
+}
+
+.showroom-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  translate: calc(var(--tx) * -10px) calc(var(--ty) * -8px);
+  scale: 1.025;
+  transition: scale 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.showroom-sheen {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  translate: calc(var(--tx) * 14%) 0;
+  background: linear-gradient(115deg, transparent 32%, rgb(255 255 255 / 0.06) 48%, transparent 62%);
+  transition: opacity 0.8s ease;
+}
+
+.showroom-cta {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.5rem;
+  padding: 0 1rem;
+  border-radius: 999px;
+  border: 1px solid rgb(216 184 120 / 0.4);
+  background: rgb(17 18 20 / 0.85);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: var(--color-fg);
+  font-size: 13px;
+  font-weight: 500;
+  opacity: 0;
+  translate: 0 8px;
+  transition: opacity 0.5s ease, translate 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.showroom-floor {
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  bottom: -34px;
+  height: 44px;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(ellipse 50% 50% at 50% 50%, rgb(0 0 0 / 0.6), transparent 70%);
+  transition: opacity 0.8s ease, scale 0.8s ease;
+}
+
+/* Hover / keyboard focus: lift, warmer light, sharper frame, zoom, CTA */
+.showroom:hover .showroom-lift,
+.showroom:focus-visible .showroom-lift {
+  transform: translateY(-8px);
+}
+
+.showroom:hover .showroom-light,
+.showroom:focus-visible .showroom-light {
+  opacity: 1;
+}
+
+.showroom:hover .showroom-frame,
+.showroom:focus-visible .showroom-frame {
+  border-color: rgb(216 184 120 / 0.35);
+  box-shadow:
+    inset 0 1px 0 rgb(245 243 239 / 0.08),
+    0 0 0 1px rgb(0 0 0 / 0.35),
+    0 40px 70px -30px rgb(0 0 0 / 0.65),
+    0 80px 130px -50px rgb(0 0 0 / 0.9),
+    0 0 70px -25px rgb(216 184 120 / 0.3);
+}
+
+.showroom:hover .showroom-image,
+.showroom:focus-visible .showroom-image {
+  scale: 1.06;
+}
+
+.showroom:hover .showroom-sheen {
+  opacity: 1;
+}
+
+.showroom:hover .showroom-cta,
+.showroom:focus-visible .showroom-cta {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.showroom:hover .showroom-floor {
+  opacity: 0.7;
+  scale: 0.94;
+}
+
+/* Touch devices: no hover, so the CTA is always visible (and more compact) */
+@media (hover: none) {
+  .showroom-cta {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@media (max-width: 639px) {
+  .showroom-cta {
+    right: 10px;
+    bottom: 10px;
+    min-height: 2.125rem;
+    padding: 0 0.75rem;
+    font-size: 12px;
+  }
+}
+
+/* Closing invitation panel */
+.work-cta {
+  background:
+    radial-gradient(ellipse 55% 130% at 100% 0%, rgb(216 184 120 / 0.13), transparent 60%),
+    radial-gradient(ellipse 40% 90% at 0% 100%, rgb(141 117 73 / 0.08), transparent 65%),
+    linear-gradient(135deg, #1e2024, #16171a);
+}
+
+/* ===========================
+   Experience — timeline
+=========================== */
+.timeline-line {
+  position: absolute;
+  top: 0.6rem;
+  bottom: 0;
+  left: 7px;
+  width: 1px;
+  transform-origin: top;
+  background: linear-gradient(180deg, rgb(216 184 120 / 0.7), rgb(216 184 120 / 0.25) 35%, rgb(245 243 239 / 0.12) 70%, transparent);
+}
+
+.timeline-marker {
+  position: absolute;
+  left: 0;
+  top: 0.45rem;
+  display: grid;
+  place-items: center;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 1px solid rgb(216 184 120 / 0.55);
+  background: var(--color-ink);
+}
+
+.timeline-marker::after {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgb(216 184 120 / 0.7);
+}
+
+.timeline-marker--current {
+  box-shadow: 0 0 0 5px rgb(216 184 120 / 0.1), 0 0 18px rgb(216 184 120 / 0.35);
+}
+
+.timeline-marker--current::after {
+  background: var(--color-gold);
+}
+
+.timeline-sub {
+  position: absolute;
+  left: 4px;
+  top: 0.55rem;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 1px solid rgb(245 243 239 / 0.3);
+  background: var(--color-ink);
 }
 
 /* ===========================
@@ -553,5 +1047,248 @@ details[open] .chevron {
 @keyframes css-sculpture-turn {
   to {
     transform: rotateY(360deg);
+  }
+}
+
+/* ===========================
+   Work — archive gallery
+=========================== */
+.archive {
+  isolation: isolate;
+}
+
+/* Full-bleed backdrop: faint grid plus two soft champagne lights */
+.archive-backdrop {
+  position: absolute;
+  z-index: -1;
+  top: -10%;
+  bottom: -6%;
+  left: 50%;
+  width: 100vw;
+  translate: -50% 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 35% 30% at 82% 18%, rgb(216 184 120 / 0.07), transparent 70%),
+    radial-gradient(ellipse 35% 30% at 12% 70%, rgb(141 117 73 / 0.07), transparent 70%),
+    linear-gradient(rgb(245 243 239 / 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(245 243 239 / 0.03) 1px, transparent 1px);
+  background-size: auto, auto, 56px 56px, 56px 56px;
+  background-position: 0 0, 0 0, center top, center top;
+  -webkit-mask-image: linear-gradient(180deg, transparent, black 12%, black 85%, transparent);
+  mask-image: linear-gradient(180deg, transparent, black 12%, black 85%, transparent);
+}
+
+/* Card: --tx / --ty come from usePointerTilt (desktop fine pointers only) */
+.gallery-card {
+  --tx: 0;
+  --ty: 0;
+  display: block;
+  height: 100%;
+  perspective: 1400px;
+  border-radius: 22px;
+}
+
+.gallery-tilt {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  padding: 10px;
+  border-radius: 22px;
+  border: 1px solid rgb(245 243 239 / 0.1);
+  background: linear-gradient(180deg, #1d1f23, #17181b);
+  box-shadow:
+    inset 0 1px 0 rgb(245 243 239 / 0.05),
+    0 30px 60px -40px rgb(0 0 0 / 0.85);
+  transform: rotateY(calc(var(--tx) * 2.5deg)) rotateX(calc(var(--ty) * -2deg));
+  transition: translate 0.6s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.5s ease, box-shadow 0.6s ease;
+}
+
+/* Soft corner light; alternates sides between cards */
+.gallery-tilt::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.55;
+  background: radial-gradient(ellipse 60% 45% at 100% 0%, rgb(216 184 120 / 0.14), transparent 70%);
+  transition: opacity 0.6s ease;
+}
+
+.gallery-card--glow-left .gallery-tilt::before {
+  background: radial-gradient(ellipse 60% 45% at 0% 100%, rgb(216 184 120 / 0.12), transparent 70%);
+}
+
+.gallery-media {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid rgb(245 243 239 / 0.08);
+  background: var(--color-ink-2);
+}
+
+.gallery-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  transition: scale 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Keeps the chip and arrow legible over bright screenshots */
+.gallery-shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgb(10 10 12 / 0.5) 0%, transparent 26%, transparent 72%, rgb(10 10 12 / 0.3) 100%);
+}
+
+.gallery-chip {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid rgb(216 184 120 / 0.3);
+  background: rgb(17 18 20 / 0.8);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.gallery-arrow {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  border: 1px solid rgb(245 243 239 / 0.14);
+  background: rgb(17 18 20 / 0.8);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  color: var(--color-fg);
+  transition: translate 0.5s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+}
+
+.gallery-info {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 18px 10px 8px;
+}
+
+.gallery-reveal {
+  display: block;
+  margin-top: auto;
+  padding-top: 16px;
+  font-size: 13px;
+  color: var(--color-gold-soft);
+  opacity: 0;
+  translate: 0 6px;
+  transition: opacity 0.5s ease, translate 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Mobile app placeholder (no screenshot exists) */
+.gallery-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(ellipse 45% 55% at 50% 45%, rgb(216 184 120 / 0.12), transparent 70%),
+    linear-gradient(160deg, #1e2024, #141518);
+}
+
+.gallery-phone {
+  display: grid;
+  place-items: center;
+  width: 62px;
+  height: 104px;
+  border-radius: 16px;
+  border: 1px solid rgb(216 184 120 / 0.35);
+  box-shadow: inset 0 0 0 4px rgb(17 18 20 / 0.9), 0 20px 40px -20px rgb(0 0 0 / 0.8);
+}
+
+/* Hover / keyboard focus */
+.gallery-card:hover .gallery-tilt,
+.gallery-card:focus-visible .gallery-tilt {
+  translate: 0 -4px;
+  border-color: rgb(216 184 120 / 0.3);
+  box-shadow:
+    inset 0 1px 0 rgb(245 243 239 / 0.07),
+    0 40px 70px -40px rgb(0 0 0 / 0.9),
+    0 0 50px -25px rgb(216 184 120 / 0.3);
+}
+
+.gallery-card:hover .gallery-tilt::before,
+.gallery-card:focus-visible .gallery-tilt::before {
+  opacity: 1;
+}
+
+.gallery-card:hover .gallery-image,
+.gallery-card:focus-visible .gallery-image {
+  scale: 1.035;
+}
+
+.gallery-card:hover .gallery-arrow,
+.gallery-card:focus-visible .gallery-arrow {
+  translate: 2px -2px;
+  border-color: var(--color-gold);
+  background: var(--color-gold);
+  color: var(--color-ink);
+}
+
+.gallery-card:hover .gallery-reveal,
+.gallery-card:focus-visible .gallery-reveal,
+.gallery-card--static .gallery-reveal {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.gallery-card--static:hover .gallery-tilt {
+  translate: none;
+}
+
+@media (hover: none) {
+  .gallery-reveal {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+/* Full-width card: screenshot and details side by side on desktop */
+@media (min-width: 1024px) {
+  .gallery-media {
+    aspect-ratio: var(--media-ar, 16 / 10);
+  }
+
+  .gallery-card--wide .gallery-tilt {
+    display: grid;
+    grid-template-columns: 7fr 5fr;
+    align-items: center;
+  }
+
+  .gallery-card--wide .gallery-info {
+    height: 100%;
+    justify-content: center;
+    padding: 28px 36px;
+  }
+
+  .gallery-card--wide .gallery-reveal {
+    margin-top: 0;
   }
 }

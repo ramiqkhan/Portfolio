@@ -1,104 +1,141 @@
-import { Section, SectionHeading, Reveal } from './ui';
+import { Fragment } from 'react';
+import { motion } from 'framer-motion';
+import { GraduationCap } from 'lucide-react';
+import { Section, Reveal } from './ui';
+import { experience, education } from '../data/portfolio';
 
-const timeline = [
-  {
-    period: 'Ongoing',
-    title: 'Freelance Full Stack Developer',
-    org: 'Independent',
-    points: [
-      'Take on independent client projects — business websites, e-commerce stores and booking platforms — from requirements to deployment.',
-      'Build React frontends backed by Node.js and Express APIs with MongoDB, deployed on Vercel.',
-    ],
-    stack: ['React', 'Node.js', 'Express', 'MongoDB', 'Vercel'],
-  },
-  {
-    period: 'Nov 2025 — Present',
-    title: 'Full Stack Lead Developer',
-    org: 'Craft Tech',
-    note: 'Progressed from intern to lead developer in nine months.',
-    points: [
-      'Lead full-stack development of the Craft Tech Dashboard, a production business management system used for daily operations.',
-      'Architect and build REST APIs, authentication, and reporting modules using Node.js, Express.js, and MongoDB.',
-      'Design admin dashboards and internal tools with React.js and Tailwind CSS, translating business requirements into working features.',
-      'Run code reviews and guide architecture decisions with the development team, improving code consistency and deployment reliability.',
-    ],
-    stack: ['React.js', 'Tailwind CSS', 'Node.js', 'Express.js', 'MongoDB', 'REST APIs'],
-  },
-  {
-    period: 'May 2025 — Nov 2025',
-    title: 'Mobile App & Web Developer',
-    org: 'Scalech',
-    points: [
-      'Built and shipped production web and mobile applications end-to-end using React.js, React Native, Node.js, and MongoDB.',
-      'Developed REST APIs, JWT authentication, and CRUD modules powering multiple client-facing products.',
-      'Built responsive, cross-device UI and improved app performance through debugging, testing, and release management.',
-    ],
-    stack: ['React.js', 'React Native', 'Node.js', 'MongoDB', 'JWT'],
-  },
-  {
-    period: 'Feb 2025 — May 2025',
-    title: 'Mobile App & Web Development Intern',
-    org: 'Scalech',
-    points: [
-      "Built the company's startup website from scratch in React.js, taken live for public launch.",
-      'Integrated frontend with backend APIs and MongoDB databases, handling data flow across the stack.',
-    ],
-    stack: ['React.js', 'REST APIs', 'MongoDB'],
-  },
-  {
-    period: 'Education',
-    title: 'BS Software Engineering',
-    org: 'SZABIST',
-    points: ['Coursework in data structures and algorithms, object-oriented programming and database systems.'],
-  },
-];
+// Technical terms set in brighter type inside each bullet
+const terms = ['React Native', 'React.js', 'Node.js', 'Express.js', 'Express', 'MongoDB', 'REST APIs', 'JWT', 'Tailwind CSS', 'Vercel'];
+const termPattern = new RegExp(`(${terms.map((t) => t.replace('.', '\\.')).join('|')})`, 'g');
+
+function Emphasized({ text }) {
+  return text.split(termPattern).map((part, i) =>
+    terms.includes(part) ? (
+      <strong key={i} className="font-medium text-fg">
+        {part}
+      </strong>
+    ) : (
+      <Fragment key={i}>{part}</Fragment>
+    )
+  );
+}
+
+const roleCount = experience.reduce((n, e) => n + e.roles.length, 0);
 
 export default function Experience() {
   return (
-    <Section id="experience" className="light-band border-t border-line-soft">
-      <SectionHeading index="04" label="Experience" title="Where I've been building." />
-
-      <ol className="border-t border-line">
-        {timeline.map((item) => (
-          <li key={item.title}>
+    <Section id="experience" tone="experience" pattern="ledger">
+      <div className="grid grid-cols-1 gap-16 lg:grid-cols-12 lg:gap-12">
+        {/* Sticky narrow column: heading, summary, education */}
+        <div className="lg:col-span-4">
+          <div className="lg:sticky lg:top-28">
             <Reveal>
-              <article className="grid grid-cols-1 gap-6 border-b border-line-soft py-10 sm:py-14 lg:grid-cols-12 lg:gap-12">
-                <div className="lg:col-span-4">
-                  <p className="label label-gold">{item.period}</p>
-                  <p className="mt-3 font-display text-lg font-medium text-fg">{item.org}</p>
-                </div>
+              <div className="mb-8 flex items-center gap-4">
+                <span className="label label-gold tabular-nums">04</span>
+                <span className="h-px w-10 bg-gold-line" aria-hidden="true" />
+                <span className="label">Experience</span>
+              </div>
+              <h2 className="text-[2rem] leading-[1.1] font-semibold tracking-[-0.03em] text-balance text-fg sm:text-5xl lg:text-[2.75rem]">
+                Where I've been <span className="serif-accent">building.</span>
+              </h2>
+              <p className="mt-6 max-w-sm text-base leading-relaxed text-muted">
+                A record of the teams and products I've worked on — newest first.
+              </p>
 
-                <div className="lg:col-span-8">
-                  <h3 className="text-2xl font-semibold tracking-[-0.025em] text-fg sm:text-3xl">{item.title}</h3>
-
-                  <ul className="mt-6 space-y-3.5">
-                    {item.points.map((p) => (
-                      <li key={p} className="flex gap-4 text-[0.9375rem] leading-relaxed text-muted">
-                        <span className="mt-[0.7em] h-px w-3 shrink-0 bg-gold" aria-hidden="true" />
-                        {p}
-                      </li>
-                    ))}
-                  </ul>
-
-                  {item.note && (
-                    <p className="mt-7 border-l border-gold pl-4 font-serif text-xl text-fg italic">{item.note}</p>
-                  )}
-
-                  {item.stack && (
-                    <ul className="mt-7 flex flex-wrap gap-2" aria-label="Technologies">
-                      {item.stack.map((s) => (
-                        <li key={s} className="tag">
-                          {s}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              </article>
+              <dl className="mt-10 grid max-w-sm grid-cols-2 border-y border-line-soft">
+                {[
+                  ['Roles', `0${roleCount}`],
+                  ['Building since', '2025'],
+                ].map(([label, value], i) => (
+                  <div key={label} className={`py-4 ${i > 0 ? 'border-l border-line-soft pl-4' : ''}`}>
+                    <dt className="label">{label}</dt>
+                    <dd className="mt-1 font-display text-2xl font-semibold text-fg tabular-nums">{value}</dd>
+                  </div>
+                ))}
+              </dl>
             </Reveal>
-          </li>
-        ))}
-      </ol>
+
+            <Reveal delay={0.1} className="mt-10 hidden lg:block">
+              <EducationCard />
+            </Reveal>
+          </div>
+        </div>
+
+        {/* Timeline */}
+        <div className="lg:col-span-8">
+          <ol className="relative pl-10 sm:pl-14">
+            <motion.span
+              className="timeline-line"
+              aria-hidden="true"
+              initial={{ scaleY: 0 }}
+              whileInView={{ scaleY: 1 }}
+              viewport={{ once: true, margin: '-120px' }}
+              transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
+            />
+
+            {experience.map((company) => (
+              <li key={company.org} className="relative pb-16 last:pb-0 sm:pb-20">
+                <span
+                  className={`timeline-marker -ml-10 sm:-ml-14 ${company.current ? 'timeline-marker--current' : ''}`}
+                  aria-hidden="true"
+                />
+                <Reveal>
+                  <header className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+                    <h3 className="font-display text-2xl font-semibold tracking-[-0.025em] text-fg sm:text-3xl">{company.org}</h3>
+                    <p className="label label-gold">{company.period}</p>
+                  </header>
+                  {company.note && (
+                    <p className="mt-3 font-serif text-lg text-gold-soft italic">— {company.note}</p>
+                  )}
+                </Reveal>
+
+                <div className="mt-8 space-y-10">
+                  {company.roles.map((role) => (
+                    <Reveal key={role.title}>
+                      <article className="relative">
+                        {company.roles.length > 1 && <span className="timeline-sub -ml-10 sm:-ml-14" aria-hidden="true" />}
+                        <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+                          <h4 className="text-lg font-semibold text-fg sm:text-xl">{role.title}</h4>
+                          <p className="shrink-0 text-xs text-subtle tabular-nums">{role.period}</p>
+                        </div>
+                        <ul className="mt-5 space-y-3 border-l border-line-soft pl-5">
+                          {role.points.map((p) => (
+                            <li key={p} className="text-[0.9375rem] leading-relaxed text-muted">
+                              <Emphasized text={p} />
+                            </li>
+                          ))}
+                        </ul>
+                        <p className="mt-5 text-xs text-subtle">
+                          <span className="label mr-2">Stack</span>
+                          {role.stack.join(' · ')}
+                        </p>
+                      </article>
+                    </Reveal>
+                  ))}
+                </div>
+              </li>
+            ))}
+          </ol>
+
+          <Reveal className="mt-16 lg:hidden">
+            <EducationCard />
+          </Reveal>
+        </div>
+      </div>
     </Section>
+  );
+}
+
+function EducationCard() {
+  return (
+    <div className="max-w-sm rounded-2xl border border-line bg-surface/50 p-6">
+      <div className="flex items-center gap-3">
+        <GraduationCap className="h-5 w-5 text-gold" strokeWidth={1.5} aria-hidden="true" />
+        <p className="label label-gold">Education</p>
+      </div>
+      <p className="mt-4 font-display text-lg font-semibold text-fg">{education.degree}</p>
+      <p className="text-sm text-muted">{education.school}</p>
+      <p className="mt-4 text-sm leading-relaxed text-subtle">{education.note}</p>
+    </div>
   );
 }

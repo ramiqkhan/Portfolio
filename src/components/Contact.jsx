@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowRight, ArrowUpRight, Copy, Check } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Copy, Check, Phone, MapPin } from 'lucide-react';
 import { FaGithub, FaLinkedinIn } from 'react-icons/fa';
 import { Section, Reveal } from './ui';
 import { profile } from '../data/portfolio';
@@ -22,37 +22,29 @@ export default function Contact() {
   const channels = [
     { label: 'GitHub', value: `github.com/${profile.githubHandle}`, href: profile.github, Icon: FaGithub },
     { label: 'LinkedIn', value: `in/${profile.linkedinHandle}`, href: profile.linkedin, Icon: FaLinkedinIn },
-    { label: 'Phone', value: profile.phone, href: profile.phoneHref },
-    { label: 'Location', value: profile.location },
+    { label: 'Phone', value: profile.phone, href: profile.phoneHref, Icon: Phone },
+    { label: 'Location', value: profile.location, Icon: MapPin },
   ];
 
   return (
-    <Section id="contact" className="light-contact border-t border-line-soft">
-      <Reveal>
-        <div className="relative overflow-hidden lit-surface rounded-[28px] border border-line px-6 py-14 sm:px-12 sm:py-20 lg:px-20 lg:py-24">
-          <div
-            className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold/60 to-transparent"
-            aria-hidden="true"
-          />
-          <div
-            className="pointer-events-none absolute -top-40 left-1/2 h-80 w-[60%] -translate-x-1/2 bg-[radial-gradient(closest-side,rgb(216_184_120/0.09),transparent)]"
-            aria-hidden="true"
-          />
-
-          <div className="relative mb-10 flex items-center gap-4">
-            <span className="label label-gold tabular-nums">05</span>
+    <Section id="contact" tone="contact" pattern="rings">
+      <div className="mx-auto max-w-4xl text-center">
+        <Reveal>
+          <div className="mb-10 flex items-center justify-center gap-4">
             <span className="h-px w-10 bg-gold-line" aria-hidden="true" />
+            <span className="label label-gold tabular-nums">05</span>
             <span className="label">Contact</span>
+            <span className="h-px w-10 bg-gold-line" aria-hidden="true" />
           </div>
 
-          <h2 className="relative max-w-4xl text-[2.25rem] leading-[1.08] font-semibold tracking-[-0.04em] text-balance text-fg sm:text-6xl lg:text-7xl">
-            Have a project or <span className="serif-accent">opportunity</span> in mind?
+          <h2 className="text-[2.6rem] leading-[1.02] font-semibold tracking-[-0.045em] text-balance text-fg sm:text-7xl lg:text-[5.5rem]">
+            Let's build something <span className="serif-accent pr-1">remarkable.</span>
           </h2>
-          <p className="relative mt-7 max-w-xl text-base leading-[1.75] text-muted sm:text-lg">
-            Let's build something thoughtful, reliable, and ready for the real world.
+          <p className="mx-auto mt-8 max-w-xl text-base leading-[1.75] text-pretty text-muted sm:text-lg">
+            Have a project, a technical challenge, or an opportunity in mind? I'd love to hear from you.
           </p>
 
-          <div className="relative mt-12 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <div className="mt-12 flex flex-col justify-center gap-3 sm:flex-row">
             <a href={mailto} className="btn btn-primary">
               Let's Talk <ArrowRight className="h-4 w-4" />
             </a>
@@ -61,51 +53,57 @@ export default function Contact() {
               <span aria-live="polite">{copied ? 'Email copied' : 'Copy email'}</span>
             </button>
           </div>
+        </Reveal>
 
-          <div className="relative mt-16 border-t border-line pt-10">
-            <p className="label mb-3">Email</p>
-            <a
-              href={mailto}
-              className="link-underline font-display text-xl font-medium tracking-[-0.02em] break-all text-fg hover:text-gold-soft sm:text-3xl lg:text-4xl"
-            >
-              {profile.email}
-            </a>
+        <Reveal delay={0.1} className="mt-20">
+          <p className="label mb-4">Write to me directly</p>
+          <a
+            href={mailto}
+            className="link-underline font-display text-[1.35rem] font-medium tracking-[-0.02em] break-all text-fg transition-colors hover:text-gold-soft sm:text-4xl"
+          >
+            {profile.email}
+          </a>
+        </Reveal>
+      </div>
 
-            <ul className="mt-12 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-line-soft bg-line-soft sm:grid-cols-2 lg:grid-cols-4">
-              {channels.map(({ label, value, href, Icon }) => {
-                const inner = (
-                  <>
-                    <span className="label flex items-center gap-2">
-                      {Icon && <Icon className="h-3 w-3" aria-hidden="true" />}
-                      {label}
-                    </span>
-                    <span className="mt-2 flex items-center justify-between gap-2 text-[0.9375rem] text-fg">
-                      <span className="truncate">{value}</span>
-                      {href && (
-                        <ArrowUpRight className="h-4 w-4 shrink-0 text-subtle transition-colors group-hover:text-gold" aria-hidden="true" />
-                      )}
-                    </span>
-                  </>
-                );
-                return (
-                  <li key={label} className="bg-surface">
-                    {href ? (
-                      <a
-                        href={href}
-                        {...(href.startsWith('http') && { target: '_blank', rel: 'noreferrer' })}
-                        className="group block px-5 py-5 transition-colors hover:bg-elevated"
-                      >
-                        {inner}
-                      </a>
-                    ) : (
-                      <div className="px-5 py-5">{inner}</div>
-                    )}
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        </div>
+      <Reveal delay={0.15} className="mx-auto mt-20 max-w-5xl">
+        <ul className="grid grid-cols-1 border-y border-line sm:grid-cols-2 lg:grid-cols-4">
+          {channels.map(({ label, value, href, Icon }, i) => {
+            const inner = (
+              <>
+                <Icon className="h-4 w-4 shrink-0 text-gold/80" aria-hidden="true" />
+                <span className="min-w-0 flex-1 text-left">
+                  <span className="label block">{label}</span>
+                  <span className="mt-1 block truncate text-sm text-fg">{value}</span>
+                </span>
+                {href && (
+                  <ArrowUpRight
+                    className="h-4 w-4 shrink-0 text-subtle transition-colors group-hover:text-gold"
+                    aria-hidden="true"
+                  />
+                )}
+              </>
+            );
+            const cell = `flex items-center gap-4 px-5 py-5 ${i > 0 ? 'border-t border-line-soft sm:border-t-0' : ''} ${
+              i % 2 === 1 ? 'sm:border-l sm:border-line-soft' : ''
+            } ${i > 1 ? 'sm:border-t sm:border-line-soft lg:border-t-0' : ''} ${i > 0 ? 'lg:border-l lg:border-line-soft' : ''}`;
+            return (
+              <li key={label}>
+                {href ? (
+                  <a
+                    href={href}
+                    {...(href.startsWith('http') && { target: '_blank', rel: 'noreferrer' })}
+                    className={`group ${cell} transition-colors hover:bg-fg/[0.03]`}
+                  >
+                    {inner}
+                  </a>
+                ) : (
+                  <div className={cell}>{inner}</div>
+                )}
+              </li>
+            );
+          })}
+        </ul>
       </Reveal>
     </Section>
   );

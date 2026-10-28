@@ -37,21 +37,23 @@ export const featuredProjects = [
   {
     title: 'Blackstream Limo',
     category: 'Luxury Chauffeur & Transportation',
+    theme: 'limo',
     location: 'Chicago, USA',
     url: 'https://blackstreamlimo.com/',
     domain: 'blackstreamlimo.com',
     image: blackstream,
-    summary:
-      'A full-stack website for a Chicago chauffeur company: a premium brand presence, a fleet catalogue driven by a live API, and a booking flow that turns visitors into reservations.',
-    challenge:
-      'Luxury transport is sold on trust and first impressions. The site had to feel as refined as the service, present the fleet clearly, and make reserving a ride effortless on any device.',
-    highlights: [
-      'Fleet catalogue served from an Express REST API, with category filters and vehicle detail views',
-      'Booking flow with vehicle pre-selection, connected to a bookings API and the Moovs reservation platform',
-      'Customer testimonials and vehicle imagery loaded from the backend and Cloudinary',
-      'Light and dark themes, plus SEO and Open Graph metadata for local search',
+    subtitle: 'Luxury Chauffeur Experience · Chicago, USA',
+    tagline:
+      'A premium transportation website combining luxury brand presentation, vehicle discovery, and a streamlined booking experience.',
+    // Short, verified contributions (checked against the live site and its API)
+    contributions: [
+      'Responsive React frontend with light and dark themes',
+      'Fleet catalogue served by an Express REST API',
+      'Booking flow wired to a bookings API and Moovs',
+      'Testimonials and Cloudinary-hosted vehicle imagery',
+      'Vercel deployment with SEO and Open Graph setup',
     ],
-    stack: ['React', 'Vite', 'Tailwind CSS', 'React Router', 'Node.js', 'Express', 'MongoDB', 'Cloudinary', 'Vercel'],
+    stack: ['React', 'Vite', 'Tailwind CSS', 'React Router', 'Node.js', 'Express', 'MongoDB', 'Cloudinary', 'Moovs', 'Vercel'],
     caseStudy: [
       {
         label: 'Frontend',
@@ -73,20 +75,21 @@ export const featuredProjects = [
   },
   {
     title: 'Ideal Watches',
-    category: 'E-commerce & Digital Retail',
+    category: 'Premium Watch E-commerce',
+    theme: 'watches',
     location: 'Pakistan',
     url: 'https://idealwatches.shop/',
     domain: 'idealwatches.shop',
     image: idealwatches,
-    summary:
-      'A full-stack storefront for authentic luxury watches that feels like a boutique while handling the complete shopping journey: browse, search, cart, checkout and order tracking.',
-    challenge:
-      'Buying a high-value watch online demands confidence. The store needed premium product presentation, fast search across a large multi-brand catalogue, and a checkout built around Cash on Delivery.',
-    highlights: [
-      'Catalogue of 360+ watches, straps, collections and sale campaigns served by an Express REST API',
-      'Product search, persistent cart and a checkout that creates orders through the API',
-      'Order tracking by reference so customers can follow delivery without an account',
-      'Cloudinary-hosted imagery, Swiper carousels and Framer Motion transitions',
+    subtitle: 'Luxury Watch Boutique · Pakistan',
+    tagline:
+      'A premium e-commerce experience built from the ground up, combining elegant product presentation with the functionality needed to run an online watch store.',
+    contributions: [
+      'UI/UX and React storefront implementation',
+      '360+ watch catalogue with product, brand and collection pages',
+      'Search, wishlist, cart and Cash on Delivery checkout',
+      'Express REST API and MongoDB for products and orders',
+      'Order tracking and Vercel production deployment',
     ],
     stack: ['React', 'Vite', 'Framer Motion', 'Swiper', 'Node.js', 'Express', 'MongoDB', 'Cloudinary', 'Vercel'],
     caseStudy: [
@@ -234,32 +237,136 @@ export const projects = [
   },
 ];
 
-export const skillGroups = [
+// Skills showcase: each tech has an icon key (mapped in Skills.jsx) and the
+// names it appears under in project stacks / role stacks, for "Used in".
+export const skillCategories = [
   {
-    title: 'Frontend',
-    icon: 'frontend',
-    items: ['React.js', 'JavaScript (ES6+)', 'HTML5', 'CSS3', 'Tailwind CSS', 'React Router', 'Framer Motion'],
+    id: 'frontend',
+    title: 'Frontend Engineering',
+    summary: 'Responsive, component-driven interfaces — from luxury brand sites to complete storefronts.',
+    items: [
+      { name: 'React.js', icon: 'react', aliases: ['React', 'React.js'] },
+      { name: 'JavaScript (ES6+)', icon: 'javascript' },
+      { name: 'HTML5', icon: 'html' },
+      { name: 'CSS3', icon: 'css' },
+      { name: 'Tailwind CSS', icon: 'tailwind', aliases: ['Tailwind CSS'] },
+      { name: 'React Router', icon: 'router', aliases: ['React Router'] },
+      { name: 'Framer Motion', icon: 'framer', aliases: ['Framer Motion'] },
+    ],
   },
   {
-    title: 'Backend',
-    icon: 'backend',
-    items: ['Node.js', 'Express.js', 'REST APIs', 'JWT authentication & authorization', 'Nodemailer / SMTP'],
+    id: 'backend',
+    title: 'Backend Engineering',
+    summary: 'REST APIs behind catalogues, bookings, orders, enquiries and authentication.',
+    items: [
+      { name: 'Node.js', icon: 'node', aliases: ['Node.js'] },
+      { name: 'Express.js', icon: 'express', aliases: ['Express', 'Express.js'] },
+      { name: 'REST APIs', icon: 'api', aliases: ['REST API', 'REST APIs', 'Express', 'Express.js'] },
+      { name: 'JWT authentication & authorization', icon: 'jwt', aliases: ['JWT'] },
+      { name: 'Nodemailer / SMTP', icon: 'mail' },
+    ],
   },
   {
-    title: 'Database',
-    icon: 'database',
-    items: ['MongoDB', 'Mongoose'],
+    id: 'database',
+    title: 'Databases',
+    summary: 'Document models behind product catalogues, vehicle fleets, orders and content.',
+    items: [
+      { name: 'MongoDB', icon: 'mongodb', aliases: ['MongoDB'] },
+      // Mongoose is only verified for Blackstream (its API returns Mongoose's __v field)
+      { name: 'Mongoose', icon: 'mongoose', usedIn: ['Blackstream Limo'] },
+    ],
   },
   {
-    title: 'Mobile',
-    icon: 'mobile',
-    items: ['React Native', 'Expo'],
+    id: 'mobile',
+    title: 'Mobile Development',
+    summary: 'Cross-platform mobile apps built from a single React codebase.',
+    items: [
+      { name: 'React Native', icon: 'react', aliases: ['React Native'] },
+      { name: 'Expo', icon: 'expo', aliases: ['Expo'] },
+    ],
   },
   {
+    id: 'tools',
     title: 'Tools & Deployment',
-    icon: 'tools',
-    items: ['Git', 'GitHub', 'Postman', 'Vercel', 'Cloudinary', 'Moovs', 'SendGrid / Mailgun'],
+    summary: 'Versioning, API testing, media delivery, integrations and production deploys.',
+    items: [
+      { name: 'Git', icon: 'git' },
+      { name: 'GitHub', icon: 'github' },
+      { name: 'Postman', icon: 'postman' },
+      { name: 'Vercel', icon: 'vercel', aliases: ['Vercel'] },
+      { name: 'Cloudinary', icon: 'cloudinary', aliases: ['Cloudinary'] },
+      { name: 'Moovs', icon: 'booking', aliases: ['Moovs'] },
+      { name: 'SendGrid / Mailgun', icon: 'mailgun' },
+    ],
   },
 ];
+
+export const experience = [
+  {
+    org: 'Craft Tech',
+    period: 'Nov 2025 — Present',
+    current: true,
+    note: 'Intern to lead developer in nine months.',
+    roles: [
+      {
+        title: 'Full Stack Lead Developer',
+        period: 'Nov 2025 — Present',
+        points: [
+          'Lead full-stack development of the Craft Tech Dashboard, a production business management system used for daily operations.',
+          'Architect and build REST APIs, authentication, and reporting modules using Node.js, Express.js, and MongoDB.',
+          'Design admin dashboards and internal tools with React.js and Tailwind CSS, translating business requirements into working features.',
+          'Run code reviews and guide architecture decisions with the development team, improving code consistency and deployment reliability.',
+        ],
+        stack: ['React.js', 'Tailwind CSS', 'Node.js', 'Express.js', 'MongoDB', 'REST APIs'],
+      },
+    ],
+  },
+  {
+    org: 'Freelance',
+    period: 'Ongoing',
+    roles: [
+      {
+        title: 'Freelance Full Stack Developer',
+        period: 'Ongoing',
+        points: [
+          'Take on independent client projects — business websites, e-commerce stores and booking platforms — from requirements to deployment.',
+          'Build React frontends backed by Node.js and Express APIs with MongoDB, deployed on Vercel.',
+        ],
+        stack: ['React', 'Node.js', 'Express', 'MongoDB', 'Vercel'],
+      },
+    ],
+  },
+  {
+    org: 'Scalech',
+    period: 'Feb 2025 — Nov 2025',
+    roles: [
+      {
+        title: 'Mobile App & Web Developer',
+        period: 'May 2025 — Nov 2025',
+        points: [
+          'Built and shipped production web and mobile applications end-to-end using React.js, React Native, Node.js, and MongoDB.',
+          'Developed REST APIs, JWT authentication, and CRUD modules powering multiple client-facing products.',
+          'Built responsive, cross-device UI and improved app performance through debugging, testing, and release management.',
+        ],
+        stack: ['React.js', 'React Native', 'Node.js', 'MongoDB', 'JWT'],
+      },
+      {
+        title: 'Mobile App & Web Development Intern',
+        period: 'Feb 2025 — May 2025',
+        points: [
+          "Built the company's startup website from scratch in React.js, taken live for public launch.",
+          'Integrated frontend with backend APIs and MongoDB databases, handling data flow across the stack.',
+        ],
+        stack: ['React.js', 'REST APIs', 'MongoDB'],
+      },
+    ],
+  },
+];
+
+export const education = {
+  degree: 'BS Software Engineering',
+  school: 'SZABIST',
+  note: 'Coursework in data structures and algorithms, object-oriented programming and database systems.',
+};
 
 export const foundations = ['Data Structures & Algorithms', 'OOP', 'DBMS', 'Java', 'C++', 'C#', 'Python'];
